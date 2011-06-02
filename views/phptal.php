@@ -21,8 +21,12 @@
  * @subpackage taltal.views
  * @since      File available since Release 0.1
  */
-App::import('View', 'Theme');
-App::import('Vendor', 'Taltal.PHPTAL', array('file' => 'phptal' . DS . 'PHPTAL.php'));
+if (!class_exists('ThemeView')) {
+    App::import('View', 'Theme');
+}
+if (!class_exists('PHPTAL')) {
+    App::import('Vendor', 'Taltal.PHPTAL', array('file' => 'phptal' . DS . 'PHPTAL.php'));
+}
 
 /**
  * PHPTALView
