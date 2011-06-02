@@ -60,7 +60,7 @@ class PhptalView extends ThemeView {
      */
     function _render($___viewFn, $___dataForView, $loadHelpers = true, $cached = false) {
 
-        if (!preg_match('/(?:\.zpt|\.xhtml)$/', $___viewFn)) {
+        if (!preg_match('/(?:\.zpt|\.xhtml|\.html)$/', $___viewFn)) {
             return parent::_render($___viewFn, $___dataForView, $loadHelpers, $cached);
         }
 
