@@ -9,12 +9,65 @@ Copyright 2011, php-tips.com (http://php-tips.com)
 h2. Plugin Instration
 
 <pre>
-git submodule add -f https://github.com/nojimage/CakePHP-TALTAL plguins/taltal
+git submodule add -f https://github.com/nojimage/CakePHP-TALTAL.git plguins/taltal
 </pre>
 
 h2. Usage
 
+in AppController
 
+<pre><code>
+class AppController extends Controller {
+    // ...(snip)
+    public $view = 'Taltal.Phptal';
+    // ...(snip)
+}
+</code></pre>
+
+set vars in controller action.
+
+<pre><code>
+class PostsController extends AppController {
+    function index() {
+        $people = array(
+            array('name' => 'foo', 'phone' => '01-344-121-021'),
+            array('name' => 'bar', 'phone' => '05-999-165-541'),
+            array('name' => 'baz', 'phone' => '01-389-321-024'),
+            array('name' => 'quz', 'phone' => '05-321-378-654'),
+        );
+        $this->set(compact('people'));
+    }
+}
+</code></pre>
+
+and create view file, extension is .html or .xhtml or .zpt
+
+eg. app/views/posts/index.html
+
+<pre><code>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr tal:repeat="person people">
+            <td tal:content="person/name">person's name</td>
+            <td tal:content="person/phone">person's phone</td>
+        </tr>
+        <tr tal:replace="">
+            <td>sample name</td>
+            <td>sample phone</td>
+        </tr>
+        <tr tal:replace="">
+            <td>sample name</td>
+            <td>sample phone</td>
+        </tr>
+    </tbody>
+</table>
+</code></pre>
 
 h2. LICENSE
 
