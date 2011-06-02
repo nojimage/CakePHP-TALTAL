@@ -1,0 +1,24 @@
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr tal:repeat="person people">
+            <td tal:content="person/name">person's name</td>
+            <td tal:content="person/phone">person's phone</td>
+        </tr>
+        <tr tal:replace="">
+            <td>sample name</td>
+            <td>sample phone</td>
+        </tr>
+        <tr tal:replace="">
+            <td>sample name</td>
+            <td>sample phone</td>
+        </tr>
+    </tbody>
+</table>
+<span tal:replace="structure php:view.Html.link( 'テキストリンク1', 'http://example.com')"></span>
+<span tal:replace="structure php:html.link( 'テキストリンク2', 'http://example.com', array('style' => 'font-size: 32px;') )"></span>

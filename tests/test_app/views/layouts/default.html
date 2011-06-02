@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title tal:content="structure title_for_layout | default"></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta tal:replace="structure script_for_layout | default"/>
+    </head>
+    <body>
+        <div tal:content="structure content_for_layout | default"></div>
+        <div tal:replace="structure php:view.Js.writeBuffer()"></div>
+    </body>
+</html>
