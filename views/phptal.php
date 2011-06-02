@@ -72,13 +72,13 @@ class PhptalView extends ThemeView {
 
             for ($i = count($helpers) - 1; $i >= 0; $i--) {
                 $name = $helperNames[$i];
-                $helper = & $loadedHelpers[$helpers[$i]];
+                $helper = $loadedHelpers[$helpers[$i]];
 
                 if (!isset($___dataForView[$name])) {
-                    ${$name} = & $helper;
+                    ${$name} = $helper;
                 }
-                $this->loaded[$helperNames[$i]] = & $helper;
-                $this->{$helpers[$i]} = & $helper;
+                $this->loaded[$helperNames[$i]] = $helper;
+                $this->{$helpers[$i]} = $helper;
             }
             $this->_triggerHelpers('beforeRender');
             unset($name, $loadedHelpers, $helpers, $i, $helperNames, $helper);
@@ -91,6 +91,12 @@ class PhptalView extends ThemeView {
         foreach ($___dataForView as $key => $value) {
             $this->Phptal->set($key, $value);
         }
+        // set helpers
+        foreach ($this->loaded as $helperName => $helper) {
+            $this->Phptal->set($helperName, $helper);
+        }
+        // set this View class
+        $this->Phptal->set('view', $this);
 
         // -- render
         ob_start();
@@ -112,7 +118,7 @@ class PhptalView extends ThemeView {
 
         if ($caching) {
             if (is_a($this->loaded['cache'], 'CacheHelper')) {
-                $cache = & $this->loaded['cache'];
+                $cache = $this->loaded['cache'];
                 $cache->base = $this->base;
                 $cache->here = $this->here;
                 $cache->helpers = $this->helpers;
