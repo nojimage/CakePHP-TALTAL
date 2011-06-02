@@ -41,7 +41,7 @@ class PhptalView extends ThemeView {
         parent::__construct($controller);
         $this->Phptal = new PHPTAL();
         $this->Phptal->setEncoding(Configure::read('App.encoding'));
-        $this->Phptal->setPhpCodeDestination(TMP . 'phptal');
+        $this->Phptal->setPhpCodeDestination(CACHE . 'views');
     }
 
     /**
