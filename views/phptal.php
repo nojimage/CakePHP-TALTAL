@@ -17,12 +17,12 @@
  * @copyright  2011 nojimage (http://php-tips.com/)
  * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
  * @link       http://php-tips.com/
- * @package    phptal
- * @subpackage phptal.views
+ * @package    taltal
+ * @subpackage taltal.views
  * @since      File available since Release 0.1
  */
 App::import('View', 'Theme');
-App::import('Vendor', 'Phptal.PHPTAL', array('file' => 'phptal' . DS . 'PHPTAL.php'));
+App::import('Vendor', 'Taltal.PHPTAL', array('file' => 'phptal' . DS . 'PHPTAL.php'));
 
 /**
  * PHPTALView

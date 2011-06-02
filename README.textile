@@ -1,4 +1,4 @@
-h1. CakePHP PHPTAL plugin
+h1. CakePHP TALTAL - PHPTAL View plugin
 
 PHP 5.2+, CakePHP 1.3+
 
@@ -9,7 +9,7 @@ Copyright 2011, php-tips.com (http://php-tips.com)
 h2. Plugin Instration
 
 <pre>
-git submodule add -f https://github.com/nojimage/CakePHP-PHPTAL-Plugin plguins/phptal
+git submodule add -f https://github.com/nojimage/CakePHP-TALTAL plguins/taltal
 </pre>
 
 h2. Usage
