@@ -8,14 +8,11 @@
  *
  * Copyright 2011, nojimage (http://php-tips.com/)
  * 
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
  * @filesource
  * @version    0.1
  * @author     nojimage <nojimage at gmail.com>
  * @copyright  2011 nojimage (http://php-tips.com/)
- * @license    http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @link       http://php-tips.com/
  * @package    taltal
  * @subpackage taltal.views
