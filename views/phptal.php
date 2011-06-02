@@ -38,7 +38,6 @@ class PhptalView extends ThemeView {
      */
     function __construct($controller) {
         parent::__construct($controller);
-        $this->ext = '.xhtml';
         $this->Phptal = new PHPTAL();
         $this->Phptal->setEncoding(Configure::read('App.encoding'));
         $this->Phptal->setPhpCodeDestination(TMP . 'phptal');
@@ -57,15 +56,13 @@ class PhptalView extends ThemeView {
      */
     function _render($___viewFn, $___dataForView, $loadHelpers = true, $cached = false) {
 
-        // if ctp is not 
-        if (!preg_match('/' . preg_quote($this->ext, '/') . '$/', $___viewFn)) {
+        if (!preg_match('/(?:\.zpt|\.xhtml)$/', $___viewFn)) {
             return parent::_render($___viewFn, $___dataForView, $loadHelpers, $cached);
         }
 
         $loadedHelpers = array();
 
         if ($this->helpers != false && $loadHelpers === true) {
-            // TODO:  helpers attach to phptal
             $loadedHelpers = $this->_loadHelpers($loadedHelpers, $this->helpers);
             $helpers = array_keys($loadedHelpers);
             $helperNames = array_map(array('Inflector', 'variable'), $helpers);
@@ -131,6 +128,26 @@ class PhptalView extends ThemeView {
             }
         }
         return $out;
+    }
+
+    /**
+     * Get the extensions that view files can use.
+     *
+     * @return array Array of extensions view files use.
+     * @access protected
+     */
+    function _getExtensions() {
+        $exts = parent::_getExtensions();
+        if ($this->ext !== '.html') {
+            array_unshift($exts, '.html');
+        }
+        if ($this->ext !== '.xhtml') {
+            array_unshift($exts, '.xhtml');
+        }
+        if ($this->ext !== '.zpt') {
+            array_unshift($exts, '.zpt');
+        }
+        return $exts;
     }
 
 }
