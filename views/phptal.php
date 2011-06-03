@@ -152,6 +152,11 @@ class PhptalView extends ThemeView {
         return $exts;
     }
 
+    /**
+     * create helper modifier
+     *
+     * @param string $helperName
+     */
     protected function _createHelperModifier($helperName) {
         $functionName = 'phptal_tales_' . Inflector::underscore($helperName);
         $helperName = Inflector::camelize($helperName);
@@ -164,5 +169,5 @@ class PhptalView extends ThemeView {
             eval($func);
         }
     }
-    
+
 }
