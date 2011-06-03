@@ -92,6 +92,7 @@ class PhptalView extends ThemeView {
         // set helpers
         foreach ($this->loaded as $helperName => $helper) {
             $this->Phptal->set($helperName, $helper);
+            $this->_createHelperModifier($helperName);
         }
         // set this View class
         $this->Phptal->set('view', $this);
@@ -151,4 +152,17 @@ class PhptalView extends ThemeView {
         return $exts;
     }
 
+    protected function _createHelperModifier($helperName) {
+        $functionName = 'phptal_tales_' . Inflector::underscore($helperName);
+        $helperName = Inflector::camelize($helperName);
+        if (!function_exists($functionName)) {
+            $func = "function {$functionName}(\$src, \$nothrow) {
+                \$src = trim(\$src);
+                \$src = 'php:view.{$helperName}.' . \$src;
+                return phptal_tales(\$src, \$nothrow);
+            }";
+            eval($func);
+        }
+    }
+    
 }

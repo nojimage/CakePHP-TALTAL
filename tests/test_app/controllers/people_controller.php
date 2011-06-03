@@ -9,7 +9,7 @@
 class PeopleController extends Controller {
 
     public $name = 'People';
-    public $uses = null;
+    public $uses = array('Person');
 
     /**
      * index method

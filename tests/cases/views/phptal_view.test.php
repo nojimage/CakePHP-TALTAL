@@ -117,6 +117,7 @@ class PhptalViewTest extends CakeTestCase {
         $this->testAppPath = dirname(dirname(dirname(__FILE__))) . DS . 'test_app' . DS;
         App::build(array(
             'controllers' => array($this->testAppPath . 'controllers' . DS),
+            'models' => array($this->testAppPath . 'models' . DS),
             'plugins' => array($this->testAppPath . 'plugins' . DS),
             'views' => array($this->testAppPath . 'views' . DS),), true);
         App::import('Controller', 'People');
@@ -142,6 +143,8 @@ class PhptalViewTest extends CakeTestCase {
         $this->Controller = new Controller();
         $this->PeopleController = new PeopleController();
         $this->PeopleController->viewPath = 'people';
+        $this->PeopleController->action = 'index';
+        $this->PeopleController->params['action'] = 'index';
         $this->PeopleController->index();
         $this->View = new TestPhptalView($this->PeopleController);
     }
@@ -231,6 +234,13 @@ class PhptalViewTest extends CakeTestCase {
         $actual = $this->View->render('index');
         $this->assertPattern('/' . preg_quote('<a href="http://example.com">テキストリンク1</a>', '/') . '/', $actual);
         $this->assertPattern('/' . preg_quote('<a href="http://example.com" style="font-size: 32px;">テキストリンク2</a>', '/') . '/', $actual);
+    }
+
+    function testHelerModifier() {
+        $actual = $this->View->render('helper');
+        $this->assertPattern('/' . preg_quote('<img src="img/dummy01.gif" alt="" />', '/') . '/', $actual);
+        $this->assertPattern('/' . preg_quote('<form id="PersonIndexForm" method="post" action="/people" accept-charset="utf-8">', '/') . '/', $actual);
+        $this->assertPattern('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName" />', '/') . '/', $actual);
     }
 
 }
