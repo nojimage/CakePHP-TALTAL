@@ -25,36 +25,6 @@ if (!class_exists('ErrorHandler')) {
 }
 
 /**
- * PhptalViewPostsController class
- *
- * @package       taltal
- * @subpackage    taltal.tests.cases.views
- */
-class PhptalViewPostsController extends Controller {
-
-    public $name = 'Posts';
-    public $uses = null;
-    public $helpers = array('Html', 'Js');
-
-    /**
-     * index method
-     *
-     * @access public
-     * @return void
-     */
-    function index() {
-        $people = array(
-            array('name' => 'foo', 'phone' => '01-344-121-021'),
-            array('name' => 'bar', 'phone' => '05-999-165-541'),
-            array('name' => 'baz', 'phone' => '01-389-321-024'),
-            array('name' => 'quz', 'phone' => '05-321-378-654'),
-        );
-        $this->set(compact('people'));
-    }
-
-}
-
-/**
  * TestPhptalView class
  *
  * @package       taltal
@@ -129,7 +99,7 @@ class TestPhptalView extends PhptalView {
  * @package       taltal
  * @subpackage    taltal.tests.cases.views
  * @property Controller $Controller
- * @property PhptalViewPostsController $PostsController
+ * @property PhptalViewPeopleController $PeopleController
  * @property PhptalView $View
  */
 class PhptalViewTest extends CakeTestCase {
@@ -144,12 +114,12 @@ class PhptalViewTest extends CakeTestCase {
      */
     function setUp() {
         Router::reload();
-        $this->Controller = new Controller();
-        $this->PostsController = new PhptalViewPostsController();
-        $this->PostsController->viewPath = 'posts';
-        $this->PostsController->index();
-        $this->View = new TestPhptalView($this->PostsController);
         $this->testAppPath = dirname(dirname(dirname(__FILE__))) . DS . 'test_app' . DS;
+        App::build(array(
+            'controllers' => array($this->testAppPath . 'controllers' . DS),
+            'plugins' => array($this->testAppPath . 'plugins' . DS),
+            'views' => array($this->testAppPath . 'views' . DS),), true);
+        App::import('Controller', 'People');
     }
 
     /**
@@ -159,9 +129,7 @@ class PhptalViewTest extends CakeTestCase {
      * @return void
      */
     function tearDown() {
-        unset($this->View);
-        unset($this->PostsController);
-        unset($this->Controller);
+        
     }
 
     /**
@@ -171,10 +139,11 @@ class PhptalViewTest extends CakeTestCase {
      * @return void
      */
     function startTest($method) {
-        App::build(array(
-            'plugins' => array($this->testAppPath . 'plugins' . DS),
-            'views' => array($this->testAppPath . 'views' . DS),
-                ), true);
+        $this->Controller = new Controller();
+        $this->PeopleController = new PeopleController();
+        $this->PeopleController->viewPath = 'people';
+        $this->PeopleController->index();
+        $this->View = new TestPhptalView($this->PeopleController);
     }
 
     /**
@@ -185,6 +154,9 @@ class PhptalViewTest extends CakeTestCase {
      */
     function endTest() {
         App::build();
+        unset($this->View);
+        unset($this->PeopleController);
+        unset($this->Controller);
     }
 
     function testGetTemplate() {
