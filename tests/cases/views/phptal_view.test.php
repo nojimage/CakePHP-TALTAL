@@ -243,4 +243,12 @@ class PhptalViewTest extends CakeTestCase {
         $this->assertPattern('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName" />', '/') . '/', $actual);
     }
 
+    function testUrlModifier() {
+        Router::setRequestInfo(array(array('controller' => 'people', 'action' => 'index'), array('base' => '/')));
+        $actual = $this->View->render('url');
+        $this->assertPattern('!' . preg_quote('<a href="/posts/view/id:1">リンクA</a>', '!') . '!', $actual);
+        $this->assertPattern('!' . preg_quote('<a href="/people/view/2">リンクB</a>', '!') . '!', $actual);
+        $this->assertPattern('!<a href="http://(?:.+?)' . preg_quote('/posts/view/id:1">リンクC</a>', '!') . '!', $actual);
+    }
+
 }

@@ -42,6 +42,7 @@ class PhptalView extends ThemeView {
         $this->Phptal = new PHPTAL();
         $this->Phptal->setEncoding(Configure::read('App.encoding'));
         $this->Phptal->setPhpCodeDestination(CACHE . 'views');
+        $this->_createUrlModifier();
     }
 
     /**
@@ -167,6 +168,42 @@ class PhptalView extends ThemeView {
                 return phptal_tales(\$src, \$nothrow);
             }";
             eval($func);
+        }
+    }
+
+    /**
+     * create url modifier
+     */
+    protected function _createUrlModifier() {
+        if (!function_exists('phptal_tales_url')) {
+
+            function phptal_tales_url($src, $nothrow) {
+                $src = trim($src);
+                if (preg_match('/^[a-z0-9_]+:/i', $src)) {
+                    $src = phptal_tales($src, $nothrow);
+                } else if (preg_match('/^[a-z0-9_]+\(/i', $src)) {
+                    $src = phptal_tales('php:' . $src, $nothrow);
+                } else {
+                    $src = "'" . $src . "'";
+                }
+                return 'Router::url(' . $src . ')';
+            }
+
+        }
+        if (!function_exists('phptal_tales_fullurl')) {
+
+            function phptal_tales_fullurl($src, $nothrow) {
+                $src = trim($src);
+                if (preg_match('/^[a-z0-9_]+:/i', $src)) {
+                    $src = phptal_tales($src, $nothrow);
+                } else if (preg_match('/^[a-z0-9_]+\(/i', $src)) {
+                    $src = phptal_tales('php:' . $src, $nothrow);
+                } else {
+                    $src = "'" . $src . "'";
+                }
+                return 'Router::url(' . $src . ', true)';
+            }
+
         }
     }
 
