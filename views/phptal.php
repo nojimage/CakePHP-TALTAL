@@ -9,7 +9,7 @@
  * Copyright 2011, nojimage (http://php-tips.com/)
  * 
  * @filesource
- * @version    0.2
+ * @version    0.3
  * @author     nojimage <nojimage at gmail.com>
  * @copyright  2011 nojimage (http://php-tips.com/)
  * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
