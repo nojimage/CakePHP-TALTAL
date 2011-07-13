@@ -251,4 +251,10 @@ class PhptalViewTest extends CakeTestCase {
         $this->assertPattern('!<a href="http://(?:.+?)' . preg_quote('/posts/view/id:1">リンクC</a>', '!') . '!', $actual);
     }
 
+    function testCakeNamespace() {
+        $actual = $this->View->render('namespace');
+        $this->assertPattern('/' . preg_quote('<img src="img/dummy01.gif" alt="" />', '/') . '/', $actual);
+        $this->assertPattern('/' . preg_quote('<form id="PersonIndexForm" method="post" action="/people" accept-charset="utf-8">', '/') . '/', $actual);
+        $this->assertPattern('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName" />', '/') . '/', $actual);
+    }
 }

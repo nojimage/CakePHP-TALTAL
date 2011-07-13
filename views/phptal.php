@@ -9,7 +9,7 @@
  * Copyright 2011, nojimage (http://php-tips.com/)
  * 
  * @filesource
- * @version    0.2
+ * @version    0.3
  * @author     nojimage <nojimage at gmail.com>
  * @copyright  2011 nojimage (http://php-tips.com/)
  * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
@@ -25,12 +25,19 @@ if (!class_exists('PHPTAL')) {
     App::import('Vendor', 'Taltal.PHPTAL', array('file' => 'phptal' . DS . 'PHPTAL.php'));
 }
 
+include_once dirname(dirname(__FILE__)) . DS . 'libs' . DS . 'PHPTAL_Namespace_Cake.php';
+
 /**
  * PHPTALView
  * 
  * @property PHPTAL $Phptal
  */
 class PhptalView extends ThemeView {
+
+    /**
+     * @var PHPTAL_Namespace_Cake
+     */
+    protected $_namespaceCake;
 
     /**
      * PHPTALView constructor
@@ -43,6 +50,7 @@ class PhptalView extends ThemeView {
         $this->Phptal->setEncoding(Configure::read('App.encoding'));
         $this->Phptal->setPhpCodeDestination(CACHE . 'views');
         $this->_createUrlModifier();
+        $this->_registerNamespace();
     }
 
     /**
@@ -205,6 +213,19 @@ class PhptalView extends ThemeView {
             }
 
         }
+    }
+
+    /**
+     * register cake namespace
+     */
+    protected function _registerNamespace() {
+        $defs = PHPTAL_Dom_Defs::getInstance();
+        /* @var $defs PHPTAL_Dom_Defs */
+        if (isset($this->_namespaceCake) || $defs->isHandledNamespace(PHPTAL_Namespace_Cake::NAMESPACE_URI)) {
+            return;
+        }
+        $this->_namespaceCake = new PHPTAL_Namespace_Cake();
+        $defs->registerNamespace($this->_namespaceCake);
     }
 
 }
