@@ -1,3 +1,6 @@
 <a href="#" tal:attributes="href url: array('controller' => 'posts', 'action' => 'view', 'id' => 1)">リンクA</a>
 <a href="#" tal:attributes="href url: view/2">リンクB</a>
 <a href="#" tal:attributes="href fullurl: array('controller' => 'posts', 'action' => 'view', 'id' => 1)">リンクC</a>
+<ul tal:repeat="post posts">
+    <li><a href="#" tal:attributes="href url: array('controller' => 'posts', 'action' => 'view', 'id' => post['Post']['id'])" tal:content="post/Post/title">タイトル</a></li>
+</ul>
