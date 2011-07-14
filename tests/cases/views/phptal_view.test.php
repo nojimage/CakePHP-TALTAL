@@ -267,4 +267,9 @@ class PhptalViewTest extends CakeTestCase {
         $this->assertPattern('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName" />', '/') . '/', $actual);
     }
 
+    function testCakeNamespace_session_flash_is_empty() {
+        $actual = $this->View->render('session_flash');
+        $this->assertPattern('!<body>\s+<div></div>\s+</body>!m', $actual);
+    }
+
 }
