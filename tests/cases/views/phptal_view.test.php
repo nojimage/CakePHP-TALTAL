@@ -147,6 +147,7 @@ class PhptalViewTest extends CakeTestCase {
         $this->PeopleController->params['action'] = 'index';
         $this->PeopleController->index();
         $this->View = new TestPhptalView($this->PeopleController);
+        $this->View->Phptal->setForceReparse(true);
     }
 
     /**
