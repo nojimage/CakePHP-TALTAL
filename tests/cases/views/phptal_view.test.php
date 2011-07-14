@@ -147,6 +147,7 @@ class PhptalViewTest extends CakeTestCase {
         $this->PeopleController->params['action'] = 'index';
         $this->PeopleController->index();
         $this->View = new TestPhptalView($this->PeopleController);
+        $this->View->Phptal->setForceReparse(true);
     }
 
     /**
@@ -245,10 +246,18 @@ class PhptalViewTest extends CakeTestCase {
 
     function testUrlModifier() {
         Router::setRequestInfo(array(array('controller' => 'people', 'action' => 'index'), array('base' => '/')));
+        $this->View->set('posts', array(
+            array('Post' => array('id' => 1, 'title' => 'Post Title 1')),
+            array('Post' => array('id' => 2, 'title' => 'Post Title 2')),
+            array('Post' => array('id' => 3, 'title' => 'Post Title 3')),
+        ));
         $actual = $this->View->render('url');
         $this->assertPattern('!' . preg_quote('<a href="/posts/view/id:1">リンクA</a>', '!') . '!', $actual);
         $this->assertPattern('!' . preg_quote('<a href="/people/view/2">リンクB</a>', '!') . '!', $actual);
         $this->assertPattern('!<a href="http://(?:.+?)' . preg_quote('/posts/view/id:1">リンクC</a>', '!') . '!', $actual);
+        $this->assertPattern('!' . preg_quote('<a href="/posts/view/id:1">Post Title 1</a>', '!') . '!', $actual);
+        $this->assertPattern('!' . preg_quote('<a href="/posts/view/id:2">Post Title 2</a>', '!') . '!', $actual);
+        $this->assertPattern('!' . preg_quote('<a href="/posts/view/id:3">Post Title 3</a>', '!') . '!', $actual);
     }
 
     function testCakeNamespace() {
@@ -257,4 +266,10 @@ class PhptalViewTest extends CakeTestCase {
         $this->assertPattern('/' . preg_quote('<form id="PersonIndexForm" method="post" action="/people" accept-charset="utf-8">', '/') . '/', $actual);
         $this->assertPattern('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName" />', '/') . '/', $actual);
     }
+
+    function testCakeNamespace_session_flash_is_empty() {
+        $actual = $this->View->render('session_flash');
+        $this->assertPattern('!<body>\s+<div></div>\s+</body>!m', $actual);
+    }
+
 }

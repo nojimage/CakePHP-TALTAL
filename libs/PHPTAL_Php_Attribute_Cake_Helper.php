@@ -28,6 +28,7 @@ class PHPTAL_Php_Attribute_Cake_Helper extends PHPTAL_Php_Attribute_TAL_Replace 
             list(, $echoType, $expression) = $m;
         }
         $this->_echoType = strtolower($echoType);
+        $expression .= " . ''";
         return trim($expression);
     }
 
