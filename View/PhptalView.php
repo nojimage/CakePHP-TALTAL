@@ -77,8 +77,6 @@ class PhptalView extends ThemeView {
      *
      * @param string $___viewFn Filename of the view
      * @param array $___dataForView Data to include in rendered view
-     * @param boolean $loadHelpers Boolean to indicate that helpers should be loaded.
-     * @param boolean $cached Whether or not to trigger the creation of a cache file.
      * @return string Rendeed output
      * @access protected
      */
