@@ -3,7 +3,7 @@
 /**
  * PHPTAL View
  *
- * CakePHP 1.3+
+ * CakePHP 2.0+
  * PHP 5.2+
  *
  * Copyright 2011, nojimage (http://php-tips.com/)
@@ -25,7 +25,7 @@ if (!class_exists('PHPTAL')) {
     App::import('Vendor', 'Taltal.PHPTAL', array('file' => 'phptal' . DS . 'PHPTAL.php'));
 }
 
-include_once dirname(dirname(__FILE__)) . DS . 'libs' . DS . 'PHPTAL_Namespace_Cake.php';
+include_once dirname(dirname(__FILE__)) . DS . 'Lib' . DS . 'PHPTAL_Namespace_Cake.php';
 
 /**
  * PHPTALView
@@ -53,6 +53,24 @@ class PhptalView extends ThemeView {
         $this->_registerNamespace();
     }
 
+    public function loadHelpers() {
+        parent::loadHelpers();
+		$helpers = HelperCollection::normalizeObjectArray($this->helpers);
+
+        foreach ($helpers as $k => $v) {
+            $name = Inflector::variable($k);
+            $helper = $this->{$v['class']};
+
+            if (!isset($this->viewVars[$name]))
+                $this->viewVars[$name] = $helper;
+
+            $this->Phptal->set($name, $helper);
+            $this->_createHelperModifier($name);
+        }
+
+        unset($name, $helpers, $k, $v, $helper);
+    }
+
     /**
      * Renders and returns output for given view filename with its
      * array of data.
@@ -61,35 +79,18 @@ class PhptalView extends ThemeView {
      * @param array $___dataForView Data to include in rendered view
      * @param boolean $loadHelpers Boolean to indicate that helpers should be loaded.
      * @param boolean $cached Whether or not to trigger the creation of a cache file.
-     * @return string Rendered output
+     * @return string Rendeed output
      * @access protected
      */
-    function _render($___viewFn, $___dataForView, $loadHelpers = true, $cached = false) {
+    protected function _render($___viewFn, $___dataForView = array()) {
 
         if (!preg_match('/(?:\.zpt|\.xhtml|\.html)$/', $___viewFn)) {
-            return parent::_render($___viewFn, $___dataForView, $loadHelpers, $cached);
+            return parent::_render($___viewFn, $___dataForView);
         }
 
-        $loadedHelpers = array();
-
-        if ($this->helpers != false && $loadHelpers === true) {
-            $loadedHelpers = $this->_loadHelpers($loadedHelpers, $this->helpers);
-            $helpers = array_keys($loadedHelpers);
-            $helperNames = array_map(array('Inflector', 'variable'), $helpers);
-
-            for ($i = count($helpers) - 1; $i >= 0; $i--) {
-                $name = $helperNames[$i];
-                $helper = $loadedHelpers[$helpers[$i]];
-
-                if (!isset($___dataForView[$name])) {
-                    ${$name} = $helper;
-                }
-                $this->loaded[$helperNames[$i]] = $helper;
-                $this->{$helpers[$i]} = $helper;
-            }
-            $this->_triggerHelpers('beforeRender');
-            unset($name, $loadedHelpers, $helpers, $i, $helperNames, $helper);
-        }
+		if (empty($___dataForView)) {
+			$___dataForView = $this->viewVars;
+		}
 
         // -- set template
         $this->Phptal->setTemplate($___viewFn);
@@ -97,11 +98,6 @@ class PhptalView extends ThemeView {
         // -- set values
         foreach ($___dataForView as $key => $value) {
             $this->Phptal->set($key, $value);
-        }
-        // set helpers
-        foreach ($this->loaded as $helperName => $helper) {
-            $this->Phptal->set($helperName, $helper);
-            $this->_createHelperModifier($helperName);
         }
         // set this View class
         $this->Phptal->set('view', $this);
@@ -114,9 +110,6 @@ class PhptalView extends ThemeView {
             debug($e->__toString());
         }
 
-        if ($loadHelpers === true) {
-            $this->_triggerHelpers('afterRender');
-        }
         $out = ob_get_clean();
 
         $caching = (
