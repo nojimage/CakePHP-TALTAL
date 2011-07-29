@@ -175,11 +175,11 @@ class PhptalViewTest extends CakeTestCase {
         $this->Controller->params['pass'] = array('home');
 
         $View = new TestPhptalView($this->Controller);
-        $expected = $this->testAppPath . 'views' . DS . 'pages' . DS . 'home.zpt';
+        $expected = $this->testAppPath . 'View' . DS . 'pages' . DS . 'home.zpt';
         $actual = $View->getViewFileName('home');
         $this->assertIdentical($expected, $actual);
 
-        $expected = $this->testAppPath . 'views' . DS . 'layouts' . DS . 'default.html';
+        $expected = $this->testAppPath . 'View' . DS . 'Layouts' . DS . 'default.html';
         $actual = $this->View->getLayoutFileName();
         $this->assertIdentical($expected, $actual);
     }
