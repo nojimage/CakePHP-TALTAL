@@ -273,7 +273,7 @@ class PhptalViewTest extends CakeTestCase {
 
     function testCakeNamespace_session_flash_is_empty() {
         $actual = $this->View->render('session_flash');
-        $this->assertRegExp('!<span id="flash">\s*</span>!', $actual);
+        $this->assertRegExp('!<body>\s+<div></div>\s+</body>!m', $actual);
     }
 
 }
