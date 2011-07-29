@@ -18,11 +18,13 @@
  * @since      File available since Release 0.1
  */
 App::import('View', array('Taltal.Phptal'));
-App::import('Core', array('View', 'Controller'));
+App::uses('View', 'View');
+App::uses('Controller', 'Controller');
+App::uses('CakeRequest', 'Network');
+App::uses('CakeResponse', 'Network');
 
-if (!class_exists('ErrorHandler')) {
-    App::import('Core', array('Error'));
-}
+if (!class_exists('ErrorHandler'))
+    App::uses('Error', 'Error');
 
 /**
  * TestPhptalView class
@@ -63,8 +65,8 @@ class TestPhptalView extends PhptalView {
      * @access public
      * @return void
      */
-    function loadHelpers(&$loaded, $helpers, $parent = null) {
-        return $this->_loadHelpers($loaded, $helpers, $parent);
+    function loadHelpers() {
+        return parent::loadHelpers();
     }
 
     /**
@@ -116,10 +118,10 @@ class PhptalViewTest extends CakeTestCase {
         Router::reload();
         $this->testAppPath = dirname(dirname(dirname(__FILE__))) . DS . 'test_app' . DS;
         App::build(array(
-            'controllers' => array($this->testAppPath . 'controllers' . DS),
-            'models' => array($this->testAppPath . 'models' . DS),
-            'plugins' => array($this->testAppPath . 'plugins' . DS),
-            'views' => array($this->testAppPath . 'views' . DS),), true);
+            'Controller' => array($this->testAppPath . 'Controller' . DS),
+            'Model' => array($this->testAppPath . 'Model' . DS),
+            'Plugin' => array($this->testAppPath . 'Plugin' . DS),
+            'View' => array($this->testAppPath . 'View' . DS),), true);
         App::import('Controller', 'People');
     }
 
@@ -140,11 +142,13 @@ class PhptalViewTest extends CakeTestCase {
      * @return void
      */
     function startTest($method) {
-        $this->Controller = new Controller();
-        $this->PeopleController = new PeopleController();
+        $request = new CakeRequest('controller_posts/index');
+        $request->params['action'] = 'index';
+
+        $this->Controller = new Controller($request);
+        $this->PeopleController = new PeopleController($request);
         $this->PeopleController->viewPath = 'people';
         $this->PeopleController->action = 'index';
-        $this->PeopleController->params['action'] = 'index';
         $this->PeopleController->index();
         $this->View = new TestPhptalView($this->PeopleController);
         $this->View->Phptal->setForceReparse(true);
