@@ -9,7 +9,7 @@ Copyright 2011, php-tips.com (http://php-tips.com)
 h2. Plugin Instration
 
 <pre>
-git submodule add -f https://github.com/nojimage/CakePHP-TALTAL.git plguins/taltal
+git submodule add -f https://github.com/nojimage/CakePHP-TALTAL.git plugins/taltal
 </pre>
 
 h2. Usage
