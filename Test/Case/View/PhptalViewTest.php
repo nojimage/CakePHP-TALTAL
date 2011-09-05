@@ -244,7 +244,7 @@ class PhptalViewTest extends CakeTestCase {
     function testHelerModifier() {
         $actual = $this->View->render('helper');
         $this->assertRegExp('/' . preg_quote('<img src="'.$this->PeopleController->webroot.'img/dummy01.gif" alt="" />', '/') . '/', $actual);
-        $this->assertRegExp('/<form action="\/people(\/index)?" id="PersonIndexForm" method="post" accept-charset="utf-8">/', $actual);
+        $this->assertRegExp('/<form action="\/people(\/index)?(\?[^"]*)?" id="PersonIndexForm" method="post" accept-charset="utf-8">/', $actual);
         $this->assertRegExp('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName"/>', '/') . '/', $actual);
     }
 
@@ -267,7 +267,7 @@ class PhptalViewTest extends CakeTestCase {
     function testCakeNamespace() {
         $actual = $this->View->render('namespace');
         $this->assertRegExp('/' . preg_quote('<img src="'.$this->PeopleController->webroot.'img/dummy01.gif" alt="" />', '/') . '/', $actual);
-        $this->assertRegExp('/<form action="\/people(\/index)?" id="PersonIndexForm" method="post" accept-charset="utf-8">/', $actual);
+        $this->assertRegExp('/<form action="\/people(\/index)?(\?[^"]*)?" id="PersonIndexForm" method="post" accept-charset="utf-8">/', $actual);
         $this->assertRegExp('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName"/>', '/') . '/', $actual);
     }
 
