@@ -75,5 +75,6 @@ http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
 
 h2. Thanks
 
+Support for CakePHP2.0. Thanks!: Juracy Filho <a href="https://github.com/juracy">https://github.com/juracy</a>
 <a href="http://phptal.org/">PHPTAL :: Template Attribute Language for PHP 5</a>
 <a href="http://bakery.cakephp.org/articles/dkvasnicka/2007/04/24/using-phptal-for-templates-phptalview-class">Using PHPTAL for templates: PhptalView class | The Bakery, Everything CakePHP</a>
