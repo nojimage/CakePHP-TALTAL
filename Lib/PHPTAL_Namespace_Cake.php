@@ -18,20 +18,21 @@
  * @since      File available since Release 0.3
  */
 class PHPTAL_Namespace_Cake extends PHPTAL_Namespace {
-    const NAMESPACE_URI = 'http://php-tips.com/ns/phptal/cake';
 
-    public function __construct() {
-        parent::__construct('cake', self::NAMESPACE_URI);
-        $this->addAttribute(new PHPTAL_NamespaceAttributeReplace('helper', 1));
-    }
+	const NAMESPACE_URI = 'http://php-tips.com/ns/phptal/cake';
 
-    public function createAttributeHandler(PHPTAL_NamespaceAttribute $att, PHPTAL_Dom_Element $tag, $expression) {
-        $name = Inflector::classify($att->getLocalName());
-        $class = 'PHPTAL_Php_Attribute_Cake_' . $name;
+	public function __construct() {
+		parent::__construct('cake', self::NAMESPACE_URI);
+		$this->addAttribute(new PHPTAL_NamespaceAttributeReplace('helper', 1));
+	}
 
-        include_once dirname(__FILE__) . DS . $class . '.php';
-        $result = new $class($tag, $expression);
-        return $result;
-    }
+	public function createAttributeHandler(PHPTAL_NamespaceAttribute $att, PHPTAL_Dom_Element $tag, $expression) {
+		$name = Inflector::classify($att->getLocalName());
+		$class = 'PHPTAL_Php_Attribute_Cake_' . $name;
+
+		include_once dirname(__FILE__) . DS . $class . '.php';
+		$result = new $class($tag, $expression);
+		return $result;
+	}
 
 }

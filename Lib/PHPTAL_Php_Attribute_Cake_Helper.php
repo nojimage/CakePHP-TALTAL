@@ -19,17 +19,17 @@
  */
 class PHPTAL_Php_Attribute_Cake_Helper extends PHPTAL_Php_Attribute_TAL_Replace {
 
-    protected $_echoType = PHPTAL_Php_Attribute::ECHO_STRUCTURE;
+	protected $_echoType = PHPTAL_Php_Attribute::ECHO_STRUCTURE;
 
-    protected function extractEchoType($expression) {
-        $echoType = self::ECHO_STRUCTURE;
-        $expression = trim($expression);
-        if (preg_match('/^(text|structure)\s+(.*?)$/ism', $expression, $m)) {
-            list(, $echoType, $expression) = $m;
-        }
-        $this->_echoType = strtolower($echoType);
-        $expression .= " . ''";
-        return trim($expression);
-    }
+	protected function extractEchoType($expression) {
+		$echoType = self::ECHO_STRUCTURE;
+		$expression = trim($expression);
+		if (preg_match('/^(text|structure)\s+(.*?)$/ism', $expression, $m)) {
+			list(, $echoType, $expression) = $m;
+		}
+		$this->_echoType = strtolower($echoType);
+		$expression .= " . ''";
+		return trim($expression);
+	}
 
 }
