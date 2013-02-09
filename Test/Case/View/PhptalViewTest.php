@@ -24,7 +24,7 @@ App::uses('CacheHelper', 'View/Helper');
 App::uses('ErrorHandler', 'Error');
 App::uses('CakeRequest', 'Network');
 App::uses('CakeResponse', 'Network');
-App::import('View', array('Taltal.Phptal'));
+App::uses('PhptalView', 'Taltal.View');
 
 /**
  * TestPhptalView class
@@ -34,62 +34,62 @@ App::import('View', array('Taltal.Phptal'));
  */
 class TestPhptalView extends PhptalView {
 
-	/**
-	 * getViewFileName method
-	 *
-	 * @param mixed $name
-	 * @access public
-	 * @return void
-	 */
-	function getViewFileName($name = null) {
+/**
+ * getViewFileName method
+ *
+ * @param mixed $name
+ * @access public
+ * @return void
+ */
+	public function getViewFileName($name = null) {
 		return $this->_getViewFileName($name);
 	}
 
-	/**
-	 * getLayoutFileName method
-	 *
-	 * @param mixed $name
-	 * @access public
-	 * @return void
-	 */
-	function getLayoutFileName($name = null) {
+/**
+ * getLayoutFileName method
+ *
+ * @param mixed $name
+ * @access public
+ * @return void
+ */
+	public function getLayoutFileName($name = null) {
 		return $this->_getLayoutFileName($name);
 	}
 
-	/**
-	 * loadHelpers method
-	 *
-	 * @param mixed $loaded
-	 * @param mixed $helpers
-	 * @param mixed $parent
-	 * @access public
-	 * @return void
-	 */
-	function loadHelpers() {
+/**
+ * loadHelpers method
+ *
+ * @param mixed $loaded
+ * @param mixed $helpers
+ * @param mixed $parent
+ * @access public
+ * @return void
+ */
+	public function loadHelpers() {
 		return parent::loadHelpers();
 	}
 
-	/**
-	 * paths method
-	 *
-	 * @param string $plugin
-	 * @param boolean $cached
-	 * @access public
-	 * @return void
-	 */
-	function paths($plugin = null, $cached = true) {
+/**
+ * paths method
+ *
+ * @param string $plugin
+ * @param boolean $cached
+ * @access public
+ * @return void
+ */
+	public function paths($plugin = null, $cached = true) {
 		return $this->_paths($plugin, $cached);
 	}
 
-	/**
-	 * cakeError method
-	 *
-	 * @param mixed $method
-	 * @param mixed $messages
-	 * @access public
-	 * @return void
-	 */
-	function cakeError($method, $messages) {
+/**
+ * cakeError method
+ *
+ * @param mixed $method
+ * @param mixed $messages
+ * @access public
+ * @return void
+ */
+	public function cakeError($method, $messages) {
 		return compact('method', 'messages');
 	}
 
@@ -108,14 +108,8 @@ class PhptalViewTest extends CakeTestCase {
 
 	public $testAppPath = '';
 
-	/**
-	 * setUp method
-	 *
-	 * @access public
-	 * @return void
-	 */
 	public function setUp() {
-		Router::reload();
+		parent::setUp();
 		$this->testAppPath = dirname(dirname(dirname(__FILE__))) . DS . 'test_app' . DS;
 		App::build(array(
 			'Controller' => array($this->testAppPath . 'Controller' . DS),
@@ -123,25 +117,7 @@ class PhptalViewTest extends CakeTestCase {
 			'Plugin' => array($this->testAppPath . 'Plugin' . DS),
 			'View' => array($this->testAppPath . 'View' . DS),), true);
 		App::import('Controller', 'People');
-	}
 
-	/**
-	 * tearDown method
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function tearDown() {
-		
-	}
-
-	/**
-	 * endTest
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function startTest($method) {
 		$request = new CakeRequest('/people/index');
 		$request->params['action'] = 'index';
 
@@ -154,20 +130,15 @@ class PhptalViewTest extends CakeTestCase {
 		$this->View->Phptal->setForceReparse(true);
 	}
 
-	/**
-	 * endTest
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function endTest() {
+	public function tearDown() {
 		App::build();
 		unset($this->View);
 		unset($this->PeopleController);
 		unset($this->Controller);
+		parent::tearDown();
 	}
 
-	function testGetTemplate() {
+	public function testGetTemplate() {
 		$this->Controller->plugin = null;
 		$this->Controller->name = 'Pages';
 		$this->Controller->viewPath = 'pages';
@@ -184,7 +155,7 @@ class PhptalViewTest extends CakeTestCase {
 		$this->assertIdentical($expected, $actual);
 	}
 
-	function testGetTemplate_home_1() {
+	public function testGetTemplateHome1() {
 		$this->Controller->plugin = null;
 		$this->Controller->name = 'Pages';
 		$this->Controller->viewPath = 'pages';
@@ -197,7 +168,7 @@ class PhptalViewTest extends CakeTestCase {
 		$this->assertIdentical($expected, $actual);
 	}
 
-	function testGetTemplate_home_2() {
+	public function testGetTemplateHome2() {
 		$this->Controller->plugin = null;
 		$this->Controller->name = 'Pages';
 		$this->Controller->viewPath = 'pages';
@@ -210,7 +181,7 @@ class PhptalViewTest extends CakeTestCase {
 		$this->assertIdentical($expected, $actual);
 	}
 
-	function testGetTemplate_home_3() {
+	public function testGetTemplateHome3() {
 		$this->Controller->plugin = null;
 		$this->Controller->name = 'Pages';
 		$this->Controller->viewPath = 'pages';
@@ -223,7 +194,7 @@ class PhptalViewTest extends CakeTestCase {
 		$this->assertIdentical($expected, $actual);
 	}
 
-	function testRender() {
+	public function testRender() {
 		$actual = $this->View->render('index');
 		$this->assertRegExp('/foo/', $actual);
 		$this->assertRegExp('/bar/', $actual);
@@ -235,20 +206,20 @@ class PhptalViewTest extends CakeTestCase {
 		$this->assertRegExp('/05-321-378-654/', $actual);
 	}
 
-	function testRenderUsingHelper() {
+	public function testRenderUsingHelper() {
 		$actual = $this->View->render('index');
 		$this->assertRegExp('/' . preg_quote('<a href="http://example.com">テキストリンク1</a>', '/') . '/', $actual);
 		$this->assertRegExp('/' . preg_quote('<a href="http://example.com" style="font-size: 32px;">テキストリンク2</a>', '/') . '/', $actual);
 	}
 
-	function testHelerModifier() {
+	public function testHelerModifier() {
 		$actual = $this->View->render('helper');
 		$this->assertRegExp('/' . preg_quote('<img src="' . $this->PeopleController->webroot . 'img/dummy01.gif" alt="" />', '/') . '/', $actual);
 		$this->assertRegExp('/<form action="\/people(\/index)?(\?[^"]*)?" id="PersonIndexForm" method="post" accept-charset="utf-8">/', $actual);
 		$this->assertRegExp('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName"/>', '/') . '/', $actual);
 	}
 
-	function testUrlModifier() {
+	public function testUrlModifier() {
 		Router::setRequestInfo(array(array('controller' => 'people', 'action' => 'index'), array('base' => '/')));
 		$this->View->set('posts', array(
 			array('Post' => array('id' => 1, 'title' => 'Post Title 1')),
@@ -264,14 +235,14 @@ class PhptalViewTest extends CakeTestCase {
 		$this->assertRegExp('!' . preg_quote('<a href="/posts/view/id:3">Post Title 3</a>', '!') . '!', $actual);
 	}
 
-	function testCakeNamespace() {
+	public function testCakeNamespace() {
 		$actual = $this->View->render('namespace');
 		$this->assertRegExp('/' . preg_quote('<img src="' . $this->PeopleController->webroot . 'img/dummy01.gif" alt="" />', '/') . '/', $actual);
 		$this->assertRegExp('/<form action="\/people(\/index)?(\?[^"]*)?" id="PersonIndexForm" method="post" accept-charset="utf-8">/', $actual);
 		$this->assertRegExp('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName"/>', '/') . '/', $actual);
 	}
 
-	function testCakeNamespace_session_flash_is_empty() {
+	public function testCakeNamespaceSessionFlashIsEmpty() {
 		$actual = $this->View->render('session_flash');
 		$this->assertRegExp('!<body>\s+<div></div>\s+</body>!m', $actual);
 	}

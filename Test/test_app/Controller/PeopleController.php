@@ -12,13 +12,13 @@ class PeopleController extends Controller {
 
 	public $uses = array('Person');
 
-	/**
-	 * index method
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function index() {
+/**
+ * index method
+ *
+ * @access public
+ * @return void
+ */
+	public function index() {
 		$datas = array(
 			array('Person' => array('name' => 'foo', 'phone' => '01-344-121-021')),
 			array('Person' => array('name' => 'bar', 'phone' => '05-999-165-541')),

@@ -34,17 +34,17 @@ include_once dirname(dirname(__FILE__)) . DS . 'Lib' . DS . 'PHPTAL_Namespace_Ca
  */
 class PhptalView extends ThemeView {
 
-	/**
-	 * @var PHPTAL_Namespace_Cake
-	 */
+/**
+ * @var PHPTAL_Namespace_Cake
+ */
 	protected $_namespaceCake;
 
-	/**
-	 * PHPTALView constructor
-	 *
-	 * @param Controller $controller
-	 */
-	function __construct($controller) {
+/**
+ * PHPTALView constructor
+ *
+ * @param Controller $controller
+ */
+	public function __construct($controller) {
 		parent::__construct($controller);
 		$this->Phptal = new PHPTAL();
 		$this->Phptal->setEncoding(Configure::read('App.encoding'));
@@ -71,30 +71,29 @@ class PhptalView extends ThemeView {
 		unset($name, $helpers, $k, $v, $helper);
 	}
 
-	/**
-	 * Renders and returns output for given view filename with its
-	 * array of data.
-	 *
-	 * @param string $___viewFn Filename of the view
-	 * @param array $___dataForView Data to include in rendered view
-	 * @return string Rendeed output
-	 * @access protected
-	 */
-	protected function _render($___viewFn, $___dataForView = array()) {
-
-		if (!preg_match('/(?:\.zpt|\.xhtml|\.html)$/', $___viewFn)) {
-			return parent::_render($___viewFn, $___dataForView);
+/**
+ * Renders and returns output for given view filename with its
+ * array of data.
+ *
+ * @param string $viewFn Filename of the view
+ * @param array $dataForView Data to include in rendered view
+ * @return string Rendeed output
+ * @access protected
+ */
+	protected function _render($viewFn, $dataForView = array()) {
+		if (!preg_match('/(?:\.zpt|\.xhtml|\.html)$/', $viewFn)) {
+			return parent::_render($viewFn, $dataForView);
 		}
 
-		if (empty($___dataForView)) {
-			$___dataForView = $this->viewVars;
+		if (empty($dataForView)) {
+			$dataForView = $this->viewVars;
 		}
 
 		// -- set template
-		$this->Phptal->setTemplate($___viewFn);
+		$this->Phptal->setTemplate($viewFn);
 
 		// -- set values
-		foreach ($___dataForView as $key => $value) {
+		foreach ($dataForView as $key => $value) {
 			$this->Phptal->set($key, $value);
 		}
 		// set this View class
@@ -126,19 +125,19 @@ class PhptalView extends ThemeView {
 				$cache->layout = $this->layout;
 				$cache->cacheAction = $this->cacheAction;
 				$cache->viewVars = $this->viewVars;
-				$cache->cache($___viewFn, $out, $cached);
+				$cache->cache($viewFn, $out, $cached);
 			}
 		}
 		return $out;
 	}
 
-	/**
-	 * Get the extensions that view files can use.
-	 *
-	 * @return array Array of extensions view files use.
-	 * @access protected
-	 */
-	function _getExtensions() {
+/**
+ * Get the extensions that view files can use.
+ *
+ * @return array Array of extensions view files use.
+ * @access protected
+ */
+	protected function _getExtensions() {
 		$exts = parent::_getExtensions();
 		if ($this->ext !== '.html') {
 			array_unshift($exts, '.html');
@@ -152,11 +151,11 @@ class PhptalView extends ThemeView {
 		return $exts;
 	}
 
-	/**
-	 * create helper modifier
-	 *
-	 * @param string $helperName
-	 */
+/**
+ * create helper modifier
+ *
+ * @param string $helperName
+ */
 	protected function _createHelperModifier($helperName) {
 		$functionName = 'phptal_tales_' . Inflector::underscore($helperName);
 		$helperName = Inflector::camelize($helperName);
@@ -170,9 +169,9 @@ class PhptalView extends ThemeView {
 		}
 	}
 
-	/**
-	 * create url modifier
-	 */
+/**
+ * create url modifier
+ */
 	protected function _createUrlModifier() {
 		if (!function_exists('phptal_tales_url')) {
 
@@ -206,9 +205,9 @@ class PhptalView extends ThemeView {
 		}
 	}
 
-	/**
-	 * register cake namespace
-	 */
+/**
+ * register cake namespace
+ */
 	protected function _registerNamespace() {
 		$defs = PHPTAL_Dom_Defs::getInstance();
 		/* @var $defs PHPTAL_Dom_Defs */
