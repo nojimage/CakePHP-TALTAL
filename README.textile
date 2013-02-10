@@ -1,15 +1,15 @@
 h1. CakePHP TALTAL - PHPTAL View plugin
 
-PHP 5.2+, CakePHP 1.3+
+PHP 5.3+, CakePHP 2.1+
 
 This plugin provides PHPTAL View Class
 
-Copyright 2011, php-tips.com (http://php-tips.com)
+Copyright 2013, php-tips.com (http://php-tips.com)
 
 h2. Plugin Installation
 
 <pre>
-git submodule add -f https://github.com/nojimage/CakePHP-TALTAL.git plugins/taltal
+git submodule add -f https://github.com/nojimage/CakePHP-TALTAL.git plugins/Taltal
 </pre>
 
 h2. Usage
@@ -42,7 +42,7 @@ class PostsController extends AppController {
 
 and create view file, extension is .html or .xhtml or .zpt
 
-eg. app/views/posts/index.html
+eg. app/View/Posts/index.html
 
 <pre><code>
 <table>

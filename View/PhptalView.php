@@ -4,7 +4,7 @@
  * PHPTAL View
  *
  * CakePHP 2.1+
- * PHP 5.2+
+ * PHP 5.3+
  *
  * Copyright 2013, nojimage (http://php-tips.com/)
  * 
