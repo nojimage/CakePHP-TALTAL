@@ -17,12 +17,14 @@
  * @subpackage taltal.tests.cases.views
  * @since      File available since Release 0.1
  */
+App::uses('View', 'View');
+App::uses('Helper', 'View');
+App::uses('Controller', 'Controller');
+App::uses('CacheHelper', 'View/Helper');
+App::uses('ErrorHandler', 'Error');
+App::uses('CakeRequest', 'Network');
+App::uses('CakeResponse', 'Network');
 App::import('View', array('Taltal.Phptal'));
-App::import('Core', array('View', 'Controller'));
-
-if (!class_exists('ErrorHandler')) {
-    App::import('Core', array('Error'));
-}
 
 /**
  * TestPhptalView class
@@ -63,8 +65,8 @@ class TestPhptalView extends PhptalView {
      * @access public
      * @return void
      */
-    function loadHelpers(&$loaded, $helpers, $parent = null) {
-        return $this->_loadHelpers($loaded, $helpers, $parent);
+    function loadHelpers() {
+        return parent::loadHelpers();
     }
 
     /**
@@ -116,10 +118,10 @@ class PhptalViewTest extends CakeTestCase {
         Router::reload();
         $this->testAppPath = dirname(dirname(dirname(__FILE__))) . DS . 'test_app' . DS;
         App::build(array(
-            'controllers' => array($this->testAppPath . 'controllers' . DS),
-            'models' => array($this->testAppPath . 'models' . DS),
-            'plugins' => array($this->testAppPath . 'plugins' . DS),
-            'views' => array($this->testAppPath . 'views' . DS),), true);
+            'Controller' => array($this->testAppPath . 'Controller' . DS),
+            'Model' => array($this->testAppPath . 'Model' . DS),
+            'Plugin' => array($this->testAppPath . 'Plugin' . DS),
+            'View' => array($this->testAppPath . 'View' . DS),), true);
         App::import('Controller', 'People');
     }
 
@@ -140,11 +142,13 @@ class PhptalViewTest extends CakeTestCase {
      * @return void
      */
     function startTest($method) {
-        $this->Controller = new Controller();
-        $this->PeopleController = new PeopleController();
+        $request = new CakeRequest('/people/index');
+        $request->params['action'] = 'index';
+
+        $this->Controller = new Controller($request);
+        $this->PeopleController = new PeopleController($request);
         $this->PeopleController->viewPath = 'people';
         $this->PeopleController->action = 'index';
-        $this->PeopleController->params['action'] = 'index';
         $this->PeopleController->index();
         $this->View = new TestPhptalView($this->PeopleController);
         $this->View->Phptal->setForceReparse(true);
@@ -171,11 +175,11 @@ class PhptalViewTest extends CakeTestCase {
         $this->Controller->params['pass'] = array('home');
 
         $View = new TestPhptalView($this->Controller);
-        $expected = $this->testAppPath . 'views' . DS . 'pages' . DS . 'home.zpt';
+        $expected = $this->testAppPath . 'View' . DS . 'pages' . DS . 'home.zpt';
         $actual = $View->getViewFileName('home');
         $this->assertIdentical($expected, $actual);
 
-        $expected = $this->testAppPath . 'views' . DS . 'layouts' . DS . 'default.html';
+        $expected = $this->testAppPath . 'View' . DS . 'Layouts' . DS . 'default.html';
         $actual = $this->View->getLayoutFileName();
         $this->assertIdentical($expected, $actual);
     }
@@ -188,7 +192,7 @@ class PhptalViewTest extends CakeTestCase {
         $this->Controller->params['pass'] = array('home_1');
 
         $View = new TestPhptalView($this->Controller);
-        $expected = $this->testAppPath . 'views' . DS . 'pages' . DS . 'home_1.xhtml';
+        $expected = $this->testAppPath . 'View' . DS . 'pages' . DS . 'home_1.xhtml';
         $actual = $View->getViewFileName('home_1');
         $this->assertIdentical($expected, $actual);
     }
@@ -201,7 +205,7 @@ class PhptalViewTest extends CakeTestCase {
         $this->Controller->params['pass'] = array('home_2');
 
         $View = new TestPhptalView($this->Controller);
-        $expected = $this->testAppPath . 'views' . DS . 'pages' . DS . 'home_2.html';
+        $expected = $this->testAppPath . 'View' . DS . 'pages' . DS . 'home_2.html';
         $actual = $View->getViewFileName('home_2');
         $this->assertIdentical($expected, $actual);
     }
@@ -214,34 +218,34 @@ class PhptalViewTest extends CakeTestCase {
         $this->Controller->params['pass'] = array('home_3');
 
         $View = new TestPhptalView($this->Controller);
-        $expected = $this->testAppPath . 'views' . DS . 'pages' . DS . 'home_3.ctp';
+        $expected = $this->testAppPath . 'View' . DS . 'pages' . DS . 'home_3.ctp';
         $actual = $View->getViewFileName('home_3');
         $this->assertIdentical($expected, $actual);
     }
 
     function testRender() {
         $actual = $this->View->render('index');
-        $this->assertPattern('/foo/', $actual);
-        $this->assertPattern('/bar/', $actual);
-        $this->assertPattern('/baz/', $actual);
-        $this->assertPattern('/quz/', $actual);
-        $this->assertPattern('/01-344-121-021/', $actual);
-        $this->assertPattern('/05-999-165-541/', $actual);
-        $this->assertPattern('/01-389-321-024/', $actual);
-        $this->assertPattern('/05-321-378-654/', $actual);
+        $this->assertRegExp('/foo/', $actual);
+        $this->assertRegExp('/bar/', $actual);
+        $this->assertRegExp('/baz/', $actual);
+        $this->assertRegExp('/quz/', $actual);
+        $this->assertRegExp('/01-344-121-021/', $actual);
+        $this->assertRegExp('/05-999-165-541/', $actual);
+        $this->assertRegExp('/01-389-321-024/', $actual);
+        $this->assertRegExp('/05-321-378-654/', $actual);
     }
 
     function testRenderUsingHelper() {
         $actual = $this->View->render('index');
-        $this->assertPattern('/' . preg_quote('<a href="http://example.com">テキストリンク1</a>', '/') . '/', $actual);
-        $this->assertPattern('/' . preg_quote('<a href="http://example.com" style="font-size: 32px;">テキストリンク2</a>', '/') . '/', $actual);
+        $this->assertRegExp('/' . preg_quote('<a href="http://example.com">テキストリンク1</a>', '/') . '/', $actual);
+        $this->assertRegExp('/' . preg_quote('<a href="http://example.com" style="font-size: 32px;">テキストリンク2</a>', '/') . '/', $actual);
     }
 
     function testHelerModifier() {
         $actual = $this->View->render('helper');
-        $this->assertPattern('/' . preg_quote('<img src="img/dummy01.gif" alt="" />', '/') . '/', $actual);
-        $this->assertPattern('/' . preg_quote('<form id="PersonIndexForm" method="post" action="/people" accept-charset="utf-8">', '/') . '/', $actual);
-        $this->assertPattern('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName" />', '/') . '/', $actual);
+        $this->assertRegExp('/' . preg_quote('<img src="'.$this->PeopleController->webroot.'img/dummy01.gif" alt="" />', '/') . '/', $actual);
+        $this->assertRegExp('/<form action="\/people(\/index)?(\?[^"]*)?" id="PersonIndexForm" method="post" accept-charset="utf-8">/', $actual);
+        $this->assertRegExp('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName"/>', '/') . '/', $actual);
     }
 
     function testUrlModifier() {
@@ -252,24 +256,24 @@ class PhptalViewTest extends CakeTestCase {
             array('Post' => array('id' => 3, 'title' => 'Post Title 3')),
         ));
         $actual = $this->View->render('url');
-        $this->assertPattern('!' . preg_quote('<a href="/posts/view/id:1">リンクA</a>', '!') . '!', $actual);
-        $this->assertPattern('!' . preg_quote('<a href="/people/view/2">リンクB</a>', '!') . '!', $actual);
-        $this->assertPattern('!<a href="http://(?:.+?)' . preg_quote('/posts/view/id:1">リンクC</a>', '!') . '!', $actual);
-        $this->assertPattern('!' . preg_quote('<a href="/posts/view/id:1">Post Title 1</a>', '!') . '!', $actual);
-        $this->assertPattern('!' . preg_quote('<a href="/posts/view/id:2">Post Title 2</a>', '!') . '!', $actual);
-        $this->assertPattern('!' . preg_quote('<a href="/posts/view/id:3">Post Title 3</a>', '!') . '!', $actual);
+        $this->assertRegExp('!' . preg_quote('<a href="/posts/view/id:1">リンクA</a>', '!') . '!', $actual);
+        $this->assertRegExp('!' . preg_quote('<a href="/people/view/2">リンクB</a>', '!') . '!', $actual);
+        $this->assertRegExp('!<a href="http://(?:.+?)' . preg_quote('/posts/view/id:1">リンクC</a>', '!') . '!', $actual);
+        $this->assertRegExp('!' . preg_quote('<a href="/posts/view/id:1">Post Title 1</a>', '!') . '!', $actual);
+        $this->assertRegExp('!' . preg_quote('<a href="/posts/view/id:2">Post Title 2</a>', '!') . '!', $actual);
+        $this->assertRegExp('!' . preg_quote('<a href="/posts/view/id:3">Post Title 3</a>', '!') . '!', $actual);
     }
 
     function testCakeNamespace() {
         $actual = $this->View->render('namespace');
-        $this->assertPattern('/' . preg_quote('<img src="img/dummy01.gif" alt="" />', '/') . '/', $actual);
-        $this->assertPattern('/' . preg_quote('<form id="PersonIndexForm" method="post" action="/people" accept-charset="utf-8">', '/') . '/', $actual);
-        $this->assertPattern('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName" />', '/') . '/', $actual);
+        $this->assertRegExp('/' . preg_quote('<img src="'.$this->PeopleController->webroot.'img/dummy01.gif" alt="" />', '/') . '/', $actual);
+        $this->assertRegExp('/<form action="\/people(\/index)?(\?[^"]*)?" id="PersonIndexForm" method="post" accept-charset="utf-8">/', $actual);
+        $this->assertRegExp('/' . preg_quote('<input name="data[Person][name]" type="text" id="PersonName"/>', '/') . '/', $actual);
     }
 
     function testCakeNamespace_session_flash_is_empty() {
         $actual = $this->View->render('session_flash');
-        $this->assertPattern('!<body>\s+<div></div>\s+</body>!m', $actual);
+        $this->assertRegExp('!<body>\s+<div></div>\s+</body>!m', $actual);
     }
 
 }
