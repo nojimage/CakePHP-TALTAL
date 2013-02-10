@@ -1,0 +1,29 @@
+{
+    "name": "nojimage/cakephp-taltal",
+    "description": "CakePHP TALTAL – PHPTAL View plugin. This plugin provides PHPTAL View Class",
+    "type": "cakephp-plugin",
+    "keywords": ["cakephp", "phptal", "view"],
+    "homepage": "https://github.com/nojimage/CakePHP-TALTAL",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "Takashi Nojima",
+            "homepage": "http://php-tips.com"
+        },
+        {
+            "name": "Juracy Filho",
+            "homepage": "http://juracy.wordpress.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "composer/installers": "*",
+        "phptal/phptal": "dev-master"
+    },
+    "extra": {
+        "installer-name": "Taltal"
+    },
+    "config": {
+        "vendor-dir": "Vendor"
+    }
+}
