@@ -74,17 +74,16 @@ class PhptalView extends ThemeView {
 	}
 
 /**
- * Renders and returns output for given view filename with its
- * array of data.
+ * Sandbox method to evaluate a template / view script in.
  *
  * @param string $viewFn Filename of the view
- * @param array $dataForView Data to include in rendered view
- * @return string Rendeed output
- * @access protected
+ * @param array $dataForView Data to include in rendered view.
+ *    If empty the current View::$viewVars will be used.
+ * @return string Rendered output
  */
-	protected function _render($viewFn, $dataForView = array()) {
-		if (!preg_match('/(?:\.zpt|\.xhtml|\.html)$/', $viewFn)) {
-			return parent::_render($viewFn, $dataForView);
+	protected function _evaluate($viewFile, $dataForView) {
+		if (!preg_match('/(?:\.zpt|\.xhtml|\.html)$/', $viewFile)) {
+			return parent::_evaluate($viewFile, $dataForView);
 		}
 
 		if (empty($dataForView)) {
@@ -92,7 +91,7 @@ class PhptalView extends ThemeView {
 		}
 
 		// -- set template
-		$this->Phptal->setTemplate($viewFn);
+		$this->Phptal->setTemplate($viewFile);
 
 		// -- set values
 		foreach ($dataForView as $key => $value) {
@@ -110,23 +109,6 @@ class PhptalView extends ThemeView {
 		}
 
 		$out = ob_get_clean();
-
-		$caching = (
-			$this->Helpers->enabled('Cache') &&
-			(($this->cacheAction != false)) && (Configure::read('Cache.check') === true)
-			);
-
-		if ($caching) {
-			$this->Cache->base = $this->base;
-			$this->Cache->here = $this->here;
-			$this->Cache->helpers = $this->helpers;
-			$this->Cache->action = $this->action;
-			$this->Cache->controllerName = $this->name;
-			$this->Cache->layout = $this->layout;
-			$this->Cache->cacheAction = $this->cacheAction;
-			$this->Cache->viewVars = $this->viewVars;
-			$this->Cache->cache($viewFn, $out, $cached);
-		}
 		return $out;
 	}
 
