@@ -101,7 +101,7 @@ class TestPhptalView extends PhptalView {
  * @package       taltal
  * @subpackage    taltal.tests.cases.views
  * @property Controller $Controller
- * @property PhptalViewPeopleController $PeopleController
+ * @property PeopleController $PeopleController
  * @property PhptalView $View
  */
 class PhptalViewTest extends CakeTestCase {
@@ -127,6 +127,7 @@ class PhptalViewTest extends CakeTestCase {
 		$this->PeopleController->action = 'index';
 		$this->PeopleController->index();
 		$this->View = new TestPhptalView($this->PeopleController);
+		$this->View->helpers = array('Html', 'Js', 'Form', 'Session');
 		$this->View->Phptal->setForceReparse(true);
 	}
 

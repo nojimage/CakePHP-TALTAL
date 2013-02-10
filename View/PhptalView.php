@@ -57,18 +57,20 @@ class PhptalView extends ThemeView {
 		parent::loadHelpers();
 		$helpers = HelperCollection::normalizeObjectArray($this->helpers);
 
-		foreach ($helpers as $k => $v) {
-			$name = Inflector::variable($k);
-			$helper = $this->{$v['class']};
+		foreach ($helpers as $properties) {
+			list(, $class) = pluginSplit($properties['class']);
+			$helper = $this->{$class};
+			$class = Inflector::variable($class);
 
-			if (!isset($this->viewVars[$name]))
-				$this->viewVars[$name] = $helper;
+			if (!isset($this->viewVars[$class])) {
+				$this->viewVars[$class] = $helper;
+			}
 
-			$this->Phptal->set($name, $helper);
-			$this->_createHelperModifier($name);
+			$this->Phptal->set($class, $helper);
+			$this->_createHelperModifier($class);
 		}
 
-		unset($name, $helpers, $k, $v, $helper);
+		unset($class, $helpers, $helper);
 	}
 
 /**
@@ -110,23 +112,20 @@ class PhptalView extends ThemeView {
 		$out = ob_get_clean();
 
 		$caching = (
-			isset($this->loaded['cache']) &&
+			$this->Helpers->enabled('Cache') &&
 			(($this->cacheAction != false)) && (Configure::read('Cache.check') === true)
 			);
 
 		if ($caching) {
-			if (is_a($this->loaded['cache'], 'CacheHelper')) {
-				$cache = $this->loaded['cache'];
-				$cache->base = $this->base;
-				$cache->here = $this->here;
-				$cache->helpers = $this->helpers;
-				$cache->action = $this->action;
-				$cache->controllerName = $this->name;
-				$cache->layout = $this->layout;
-				$cache->cacheAction = $this->cacheAction;
-				$cache->viewVars = $this->viewVars;
-				$cache->cache($viewFn, $out, $cached);
-			}
+			$this->Cache->base = $this->base;
+			$this->Cache->here = $this->here;
+			$this->Cache->helpers = $this->helpers;
+			$this->Cache->action = $this->action;
+			$this->Cache->controllerName = $this->name;
+			$this->Cache->layout = $this->layout;
+			$this->Cache->cacheAction = $this->cacheAction;
+			$this->Cache->viewVars = $this->viewVars;
+			$this->Cache->cache($viewFn, $out, $cached);
 		}
 		return $out;
 	}
