@@ -17,14 +17,8 @@
  * @subpackage taltal.tests.cases.views
  * @since      File available since Release 0.1
  */
-App::uses('View', 'View');
-App::uses('Helper', 'View');
-App::uses('Controller', 'Controller');
-App::uses('CacheHelper', 'View/Helper');
-App::uses('ErrorHandler', 'Error');
-App::uses('CakeRequest', 'Network');
-App::uses('CakeResponse', 'Network');
 App::uses('PhptalView', 'Taltal.View');
+App::uses('Controller', 'Controller');
 
 /**
  * TestPhptalView class

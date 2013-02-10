@@ -18,21 +18,18 @@
  * @subpackage taltal.views
  * @since      File available since Release 0.1
  */
-if (!class_exists('ThemeView')) {
-	App::import('View', 'Theme');
-}
+App::uses('View', 'View');
 if (!class_exists('PHPTAL')) {
 	App::import('Vendor', 'Taltal.PHPTAL', array('file' => 'phptal' . DS . 'PHPTAL.php'));
 }
-
-include_once dirname(dirname(__FILE__)) . DS . 'Lib' . DS . 'PHPTAL_Namespace_Cake.php';
+App::uses('PHPTAL_Namespace_Cake', 'Taltal.Lib');
 
 /**
  * PHPTALView
  * 
  * @property PHPTAL $Phptal
  */
-class PhptalView extends ThemeView {
+class PhptalView extends View {
 
 /**
  * @var PHPTAL_Namespace_Cake
