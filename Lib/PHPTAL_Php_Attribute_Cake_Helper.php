@@ -3,14 +3,14 @@
 /**
  * PHPTAL Attribute Cake Helper
  *
- * CakePHP 1.3+
+ * CakePHP 2.1+
  * PHP 5.2+
  *
- * Copyright 2011, nojimage (http://php-tips.com/)
+ * Copyright 2013, nojimage (http://php-tips.com/)
  * 
  * @filesource
  * @author     nojimage <nojimage at gmail.com>
- * @copyright  2011 nojimage (http://php-tips.com/)
+ * @copyright  2013 nojimage (http://php-tips.com/)
  * @license    http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  * @link       http://php-tips.com/
  * @package    taltal
