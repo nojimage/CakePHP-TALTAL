@@ -20,9 +20,9 @@
  */
 App::uses('View', 'View');
 if (!class_exists('PHPTAL')) {
-	App::import('Vendor', 'Taltal.PHPTAL', array('file' => 'phptal' . DS . 'PHPTAL.php'));
+	App::import('Vendor', 'Taltal.PHPTAL', array('file' => 'phptal' . DS . 'classes' . DS . 'PHPTAL.php'));
 }
-App::uses('PHPTAL_Namespace_Cake', 'Taltal.Lib');
+App::uses('Cake_PHPTAL_Namespace_Cake', 'Taltal.Lib');
 
 /**
  * PHPTALView
@@ -189,10 +189,10 @@ class PhptalView extends View {
 	protected function _registerNamespace() {
 		$defs = PHPTAL_Dom_Defs::getInstance();
 		/* @var $defs PHPTAL_Dom_Defs */
-		if (isset($this->_namespaceCake) || $defs->isHandledNamespace(PHPTAL_Namespace_Cake::NAMESPACE_URI)) {
+		if (isset($this->_namespaceCake) || $defs->isHandledNamespace(Cake_PHPTAL_Namespace_Cake::NAMESPACE_URI)) {
 			return;
 		}
-		$this->_namespaceCake = new PHPTAL_Namespace_Cake();
+		$this->_namespaceCake = new Cake_PHPTAL_Namespace_Cake();
 		$defs->registerNamespace($this->_namespaceCake);
 	}
 
