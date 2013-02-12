@@ -14,12 +14,24 @@ git submodule add -f https://github.com/nojimage/CakePHP-TALTAL.git plugins/Talt
 
 h2. Usage
 
+in app/Config/bootstrap.php
+
+<pre><code>
+CakePlugin::load('Taltal');
+</code></pre>
+
+or
+
+<pre><code>
+CakePlugin::loadAll();
+</code></pre>
+
 in AppController
 
 <pre><code>
 class AppController extends Controller {
     // ...(snip)
-    public $view = 'Taltal.Phptal';
+    public $viewClass = 'Taltal.Phptal';
     // ...(snip)
 }
 </code></pre>
