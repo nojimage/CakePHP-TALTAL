@@ -14,6 +14,13 @@ h2. Plugin Installation
 git submodule add -f https://github.com/nojimage/CakePHP-TALTAL.git plugins/Taltal
 </pre>
 
+and get PHPTAL library.
+
+<pre>
+cd plugins/Taltal
+git submodule update --init
+</pre>
+
 h2. Usage
 
 in app/Config/bootstrap.php
