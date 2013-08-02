@@ -6,6 +6,8 @@ This plugin provides PHPTAL View Class
 
 Copyright 2013, php-tips.com (http://php-tips.com)
 
+!https://travis-ci.org/nojimage/CakePHP-TALTAL.png?branch=master!:https://travis-ci.org/nojimage/CakePHP-TALTAL
+
 h2. Plugin Installation
 
 <pre>
