@@ -1,0 +1,3 @@
+[submodule "Vendor/phptal"]
+	path = Vendor/phptal
+	url = https://github.com/pornel/PHPTAL
